@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=4 uid="uid://buf2fbf15utp1"]
+[gd_scene load_steps=17 format=4 uid="uid://buf2fbf15utp1"]
 
 [ext_resource type="Script" path="res://Scripts/test_script.gd" id="1_i0ymv"]
 [ext_resource type="Texture2D" uid="uid://cghkqkitsb801" path="res://Assets/BGTile.png" id="2_ljq5v"]
@@ -6,6 +6,11 @@
 [ext_resource type="Texture2D" uid="uid://2rkrtamctda2" path="res://Assets/PositionMarker.png" id="4_4dp4p"]
 [ext_resource type="Script" path="res://Scripts/visual_node_menu.gd" id="5_aic2d"]
 [ext_resource type="Texture2D" uid="uid://4a50lpq2ndjb" path="res://Assets/ConnectorIn.tres" id="5_ldyyu"]
+[ext_resource type="Texture2D" uid="uid://c1ppfrxnrnawd" path="res://Assets/On_Toggle.png" id="7_wh3h5"]
+[ext_resource type="Texture2D" uid="uid://ca2hg2xcamxr3" path="res://Assets/Off_Toggle.png" id="8_dotuu"]
+[ext_resource type="Script" path="res://Scripts/menu_filter.gd" id="9_8gb65"]
+[ext_resource type="Texture2D" uid="uid://buenq01c6j23m" path="res://Assets/Hide_Toggle.png" id="10_f4gim"]
+[ext_resource type="Texture2D" uid="uid://bwu5igr15c60y" path="res://Assets/Show_Toggle.png" id="11_5jr1k"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_deaut"]
 texture = ExtResource("2_ljq5v")
@@ -18,6 +23,22 @@ texture_region_size = Vector2i(80, 80)
 [sub_resource type="TileSet" id="TileSet_4r5be"]
 tile_size = Vector2i(80, 80)
 sources/0 = SubResource("TileSetAtlasSource_deaut")
+
+[sub_resource type="Theme" id="Theme_850ep"]
+CheckButton/icons/checked = ExtResource("7_wh3h5")
+CheckButton/icons/unchecked = ExtResource("8_dotuu")
+
+[sub_resource type="Curve2D" id="Curve2D_4woku"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 1241.25, 323.75, 0, 0, 0, 0, 1241.25, 0)
+}
+point_count = 2
+
+[sub_resource type="Theme" id="Theme_asgfo"]
+CheckButton/icons/checked = ExtResource("11_5jr1k")
+CheckButton/icons/checked_disabled = ExtResource("11_5jr1k")
+CheckButton/icons/unchecked = ExtResource("10_f4gim")
+CheckButton/icons/unchecked_disabled = ExtResource("10_f4gim")
 
 [node name="Node2D" type="Control" groups=["RootNode"]]
 texture_filter = 1
@@ -82,7 +103,6 @@ position = Vector2(-318, 45)
 texture = ExtResource("5_ldyyu")
 
 [node name="VisualNodeMenu" type="CanvasLayer" parent="."]
-visible = false
 scale = Vector2(0.8, 0.8)
 transform = Transform2D(0.8, 0, 0, 0.8, 0, 0)
 script = ExtResource("5_aic2d")
@@ -96,144 +116,310 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="VisualNode" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
-layout_mode = 2
-type = 2
-code = "<p {0}> {1} </p>"
-visibleText = "P Args: {1} : {0}"
-disabled = true
-
-[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/VisualNode"]
-layout_mode = 0
-offset_right = 448.0
-offset_bottom = 160.0
-flat = true
-
-[node name="VisualNode11" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
+[node name="TextInsert" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
 layout_mode = 2
 code = "{text}"
 visibleText = "Insert Text:"
 disabled = true
 
-[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/VisualNode11"]
+[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/TextInsert"]
 layout_mode = 0
 offset_right = 448.0
 offset_bottom = 160.0
 flat = true
 
-[node name="VisualNode2" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
-layout_mode = 2
-type = 5
-code = "onClick={0}"
-visibleText = "onClickEvent"
-disabled = true
-
-[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/VisualNode2"]
-layout_mode = 0
-offset_right = 448.0
-offset_bottom = 160.0
-flat = true
-
-[node name="VisualNode3" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
+[node name="Title" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
 layout_mode = 2
 type = 1
 code = "<title>{0}</title>"
 visibleText = "Title"
 disabled = true
 
-[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/VisualNode3"]
+[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/Title"]
 layout_mode = 0
 offset_right = 448.0
 offset_bottom = 160.0
 flat = true
 
-[node name="VisualNode4" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
+[node name="Paragraph" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
 layout_mode = 2
-type = 3
-code = "{0} { {1} }"
-visibleText = "ELEM {0} { ARGS {1} }"
+type = 2
+code = "<p {0}> {1} </p>"
+visibleText = "P Args: {0} : {1}"
 disabled = true
 
-[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/VisualNode4"]
+[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/Paragraph"]
 layout_mode = 0
 offset_right = 448.0
 offset_bottom = 160.0
 flat = true
 
-[node name="VisualNode5" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
-layout_mode = 2
-type = 6
-code = "color: {0};"
-visibleText = "Color: {0}"
-disabled = true
-
-[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/VisualNode5"]
-layout_mode = 0
-offset_right = 448.0
-offset_bottom = 160.0
-flat = true
-
-[node name="VisualNode6" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
+[node name="Header" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
 layout_mode = 2
 type = 2
 code = "<h{0}> {1} </h{0}>"
 visibleText = "HEADER{0}: {1}"
 disabled = true
 
-[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/VisualNode6"]
+[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/Header"]
 layout_mode = 0
 offset_right = 448.0
 offset_bottom = 160.0
 flat = true
 
-[node name="VisualNode7" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
-layout_mode = 2
-type = 4
-code = "let {0} = {1};"
-visibleText = "LET {0} = {1}"
-disabled = true
-
-[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/VisualNode7"]
-layout_mode = 0
-offset_right = 448.0
-offset_bottom = 160.0
-flat = true
-
-[node name="VisualNode8" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
-layout_mode = 2
-type = 4
-code = "function {0} { {1} }"
-visibleText = "Function {0}"
-disabled = true
-
-[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/VisualNode8"]
-layout_mode = 0
-offset_right = 448.0
-offset_bottom = 160.0
-flat = true
-
-[node name="VisualNode9" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
+[node name="HR" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
 layout_mode = 2
 type = 2
 code = "<hr {0}>"
 visibleText = "HR | Args {0}"
 disabled = true
 
-[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/VisualNode9"]
+[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/HR"]
 layout_mode = 0
 offset_right = 448.0
 offset_bottom = 160.0
 flat = true
 
-[node name="VisualNode10" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
+[node name="Let" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
+layout_mode = 2
+type = 4
+code = "let {0} = {1};"
+visibleText = "LET {0} = {1}"
+disabled = true
+
+[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/Let"]
+layout_mode = 0
+offset_right = 448.0
+offset_bottom = 160.0
+flat = true
+
+[node name="Function" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
+layout_mode = 2
+type = 4
+code = "function {0} { {1} }"
+visibleText = "Function {0}"
+disabled = true
+
+[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/Function"]
+layout_mode = 0
+offset_right = 448.0
+offset_bottom = 160.0
+flat = true
+
+[node name="onClick" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
+layout_mode = 2
+type = 5
+code = "onClick={0}"
+visibleText = "onClickEvent"
+disabled = true
+
+[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/onClick"]
+layout_mode = 0
+offset_right = 448.0
+offset_bottom = 160.0
+flat = true
+
+[node name="CssElem" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
+layout_mode = 2
+type = 3
+code = "{0} { {1} }"
+visibleText = "ELEM {0} { ARGS {1} }"
+disabled = true
+
+[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/CssElem"]
+layout_mode = 0
+offset_right = 448.0
+offset_bottom = 160.0
+flat = true
+
+[node name="ColorParam" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
+layout_mode = 2
+type = 6
+code = "color: {0};"
+visibleText = "Color: {0}"
+disabled = true
+
+[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/ColorParam"]
+layout_mode = 0
+offset_right = 448.0
+offset_bottom = 160.0
+flat = true
+
+[node name="Final" parent="VisualNodeMenu/ScrollContainer/GridContainer" instance=ExtResource("3_jkooo")]
 layout_mode = 2
 type = 7
 code = "<head> <script>{0}</script> <style>{3}</style> {1} </head><body> {2} </body>"
 visibleText = "Script {0}\\nHead {1}\\nBody {2}\\nStyle {3}"
 disabled = true
 
-[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/VisualNode10"]
+[node name="Button" type="Button" parent="VisualNodeMenu/ScrollContainer/GridContainer/Final"]
 layout_mode = 0
 offset_right = 448.0
 offset_bottom = 160.0
 flat = true
+
+[node name="Filters" type="VBoxContainer" parent="VisualNodeMenu"]
+offset_left = 952.0
+offset_right = 1199.0
+offset_bottom = 404.0
+
+[node name="Neutral" type="CheckButton" parent="VisualNodeMenu/Filters" node_paths=PackedStringArray("parent")]
+layout_mode = 2
+focus_mode = 0
+theme = SubResource("Theme_850ep")
+theme_override_font_sizes/font_size = 28
+text = "Neutral"
+alignment = 2
+script = ExtResource("9_8gb65")
+parent = NodePath("../..")
+
+[node name="ColorRect" type="ColorRect" parent="VisualNodeMenu/Filters/Neutral"]
+layout_mode = 0
+offset_left = 246.75
+offset_top = 7.5
+offset_right = 282.75
+offset_bottom = 43.5
+
+[node name="Head" type="CheckButton" parent="VisualNodeMenu/Filters" node_paths=PackedStringArray("parent")]
+layout_mode = 2
+focus_mode = 0
+theme = SubResource("Theme_850ep")
+theme_override_font_sizes/font_size = 28
+text = "Head"
+alignment = 2
+script = ExtResource("9_8gb65")
+type = 1
+parent = NodePath("../..")
+
+[node name="ColorRect" type="ColorRect" parent="VisualNodeMenu/Filters/Head"]
+layout_mode = 0
+offset_left = 246.75
+offset_top = 7.5
+offset_right = 282.75
+offset_bottom = 43.5
+
+[node name="Body" type="CheckButton" parent="VisualNodeMenu/Filters" node_paths=PackedStringArray("parent")]
+layout_mode = 2
+focus_mode = 0
+theme = SubResource("Theme_850ep")
+theme_override_font_sizes/font_size = 28
+text = "Body"
+alignment = 2
+script = ExtResource("9_8gb65")
+type = 2
+parent = NodePath("../..")
+
+[node name="ColorRect" type="ColorRect" parent="VisualNodeMenu/Filters/Body"]
+layout_mode = 0
+offset_left = 246.75
+offset_top = 7.5
+offset_right = 282.75
+offset_bottom = 43.5
+
+[node name="CSS" type="CheckButton" parent="VisualNodeMenu/Filters" node_paths=PackedStringArray("parent")]
+layout_mode = 2
+focus_mode = 0
+theme = SubResource("Theme_850ep")
+theme_override_font_sizes/font_size = 28
+text = "CSS"
+alignment = 2
+script = ExtResource("9_8gb65")
+type = 3
+parent = NodePath("../..")
+
+[node name="ColorRect" type="ColorRect" parent="VisualNodeMenu/Filters/CSS"]
+layout_mode = 0
+offset_left = 246.75
+offset_top = 7.5
+offset_right = 282.75
+offset_bottom = 43.5
+
+[node name="JS" type="CheckButton" parent="VisualNodeMenu/Filters" node_paths=PackedStringArray("parent")]
+layout_mode = 2
+focus_mode = 0
+theme = SubResource("Theme_850ep")
+theme_override_font_sizes/font_size = 28
+text = "JavaScript"
+alignment = 2
+script = ExtResource("9_8gb65")
+type = 4
+parent = NodePath("../..")
+
+[node name="ColorRect" type="ColorRect" parent="VisualNodeMenu/Filters/JS"]
+layout_mode = 0
+offset_left = 246.75
+offset_top = 7.5
+offset_right = 282.75
+offset_bottom = 43.5
+
+[node name="HTML Args" type="CheckButton" parent="VisualNodeMenu/Filters" node_paths=PackedStringArray("parent")]
+layout_mode = 2
+focus_mode = 0
+theme = SubResource("Theme_850ep")
+theme_override_font_sizes/font_size = 28
+text = "HTML Args"
+alignment = 2
+script = ExtResource("9_8gb65")
+type = 5
+parent = NodePath("../..")
+
+[node name="ColorRect" type="ColorRect" parent="VisualNodeMenu/Filters/HTML Args"]
+layout_mode = 0
+offset_left = 246.75
+offset_top = 7.5
+offset_right = 282.75
+offset_bottom = 43.5
+
+[node name="CSS Params" type="CheckButton" parent="VisualNodeMenu/Filters" node_paths=PackedStringArray("parent")]
+layout_mode = 2
+focus_mode = 0
+theme = SubResource("Theme_850ep")
+theme_override_font_sizes/font_size = 28
+text = "CSS Params"
+alignment = 2
+script = ExtResource("9_8gb65")
+type = 6
+parent = NodePath("../..")
+
+[node name="ColorRect" type="ColorRect" parent="VisualNodeMenu/Filters/CSS Params"]
+layout_mode = 0
+offset_left = 246.75
+offset_top = 7.5
+offset_right = 282.75
+offset_bottom = 43.5
+
+[node name="Final" type="CheckButton" parent="VisualNodeMenu/Filters" node_paths=PackedStringArray("parent")]
+layout_mode = 2
+focus_mode = 0
+theme = SubResource("Theme_850ep")
+theme_override_font_sizes/font_size = 28
+text = "Final"
+alignment = 2
+script = ExtResource("9_8gb65")
+type = 7
+parent = NodePath("../..")
+
+[node name="ColorRect" type="ColorRect" parent="VisualNodeMenu/Filters/Final"]
+layout_mode = 0
+offset_left = 246.75
+offset_top = 7.5
+offset_right = 282.75
+offset_bottom = 43.5
+
+[node name="Path2D" type="Path2D" parent="VisualNodeMenu"]
+curve = SubResource("Curve2D_4woku")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="VisualNodeMenu/Path2D"]
+position = Vector2(1241.25, 323.75)
+rotation = -1.5708
+rotates = false
+
+[node name="FilterShow" type="CheckButton" parent="VisualNodeMenu/Path2D/PathFollow2D"]
+offset_right = 92.0
+offset_bottom = 88.0
+rotation = 1.57079
+focus_mode = 0
+theme = SubResource("Theme_asgfo")
+flat = true
+
+[connection signal="toggled" from="VisualNodeMenu/Path2D/PathFollow2D/FilterShow" to="VisualNodeMenu" method="_on_filter_show_toggled"]
