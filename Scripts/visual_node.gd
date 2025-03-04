@@ -15,8 +15,8 @@ const typeColours = {
 }
 
 @export var type : NodeTypes = NodeTypes.NEUTRAL
-@export var code : String = "<p> {0} </p>"
-@export var visibleText : String = "Paragraph: {0}"
+@export_multiline var code : String = "<p> {0} </p>"
+@export_multiline var visibleText : String = "Paragraph: {0}"
 @export var mapping : Dictionary = {"0": ""}
 @export var disabled : bool = false
 

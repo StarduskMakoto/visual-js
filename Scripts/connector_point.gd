@@ -30,6 +30,9 @@ func updateIcon() -> void:
 func _process(_delta) -> void:
 	if tracking:
 		line_towards(get_local_mouse_position())
+		if Input.is_key_pressed(KEY_ESCAPE):
+			tracking = false
+			$Line2D.visible = false
 	else:
 		point_check()
 
