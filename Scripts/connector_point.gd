@@ -33,6 +33,11 @@ func _process(_delta) -> void:
 		if Input.is_key_pressed(KEY_ESCAPE):
 			tracking = false
 			$Line2D.visible = false
+			var root = get_tree().get_first_node_in_group("RootNode")
+			if root == null:
+				return
+			if sending:
+				root.set("SelectedPoint", null)
 	else:
 		point_check()
 

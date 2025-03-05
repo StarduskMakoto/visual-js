@@ -11,6 +11,7 @@ func _ready() -> void:
 		if button == null:
 			continue
 		button.pressed.connect(_button_pressed.bind(i))
+		button.size = i.size
 	pass # Replace with function body.
 
 

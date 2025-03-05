@@ -51,9 +51,8 @@ func _ready() -> void:
 
 	### Browsers ###############################################################
 
-	# Split vertically the windows
-	$WebView.set_position(Vector2(0,0))
-	$WebView.set_size(Vector2(h, w))
+	#$WebView.set_position(Vector2(0,0))
+	#$WebView.set_size(Vector2(h, w))
 
 	# Wait one frame for the texture rect to get its size
 	await get_tree().process_frame
@@ -82,6 +81,8 @@ func compile_code():
 	
 	var data_string = final_node._get_code()
 	browser.load_data_uri(data_string, "text/html")
+	await browser.on_page_loaded
+	$WebView/Label.text = browser.get_title()
 
 func toggleWeb():
 	if webViewToggle:
